@@ -15,9 +15,13 @@ function loadJSON(callback) {
 }
 
 function addAllMarkers(data) {
+    var markers = [];
     for (var i = 0; i < data.length; i++) {
-        addMarker(data[i]);
+        markers.push(addMarker(data[i]));
     }
+    var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
 }
 
 function addMarker(params) {
@@ -59,6 +63,7 @@ function addMarker(params) {
             infoWindow.open(map, marker);
         });
     }
+    return marker;
 }
 
 function initMap() {
