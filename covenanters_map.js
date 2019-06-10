@@ -75,12 +75,7 @@ function addMarker(params) {
                 + "</div>" + imgDiv + "</div>"
         });
         marker.addListener('click', function() {
-            var m = infoWindow.getMap();
-            if (m !== null && typeof m !== "undefined") {
-                infoWindow.open(map, marker);
-            } else {
-                infoWindow.close();
-            }
+            infoWindow.open(map, marker);
         });
     }
     return marker;
