@@ -81,7 +81,7 @@ function addMarker(params) {
 }
 
 function updateMapStyle(data) {
-    var styledMapType = new google.maps.styledMapType(data);
+    var styledMapType = new google.maps.StyledMapType(data);
     map.mapTypes.set('styled_map', styledMapType);
     map.setMapTypeId('styled_map');
 }
