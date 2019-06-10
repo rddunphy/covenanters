@@ -67,9 +67,23 @@ function addMarker(params) {
 }
 
 function initMap() {
+    var UK_BOUNDS = {
+        north: 60.98,
+        south: 49.91,
+        west: -10.52,
+        east: 1.80
+    };
+    var SCOTLAND_COORDS = {
+        lat:56.4907,
+        lng:-4.2026
+    };
     var options = {
         zoom:7,
-        center:{lat:56.4907, lng:-4.2026}
+        restriction: {
+            latLngBounds: UK_BOUNDS,
+            strictBounds: false,
+        },
+        center: SCOTLAND_COORDS
     };
     map = new google.maps.Map(document.getElementById('map'), options);
     loadJSON(addAllMarkers)
