@@ -30,8 +30,8 @@ function addAllMarkers(data) {
     for (var i = 0; i < data.length; i++) {
         markers.push(addMarker(data[i]));
     }
-    var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'markerclusterer/img/m'});
+    var clusterer = new MarkerClusterer(map, markers,
+        {imagePath: 'markerclusterer/img/m', averageCenter: true});
 
 }
 
