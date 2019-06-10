@@ -24,3 +24,7 @@
 .info-window-img {
     width: 250px;
 }
+
+.info-window-wrapper {
+    text-align: left;
+}
