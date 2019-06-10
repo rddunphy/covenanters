@@ -12,10 +12,10 @@ const SCOTLAND_COORDS = {
 
 var map;
 
-function loadJSON(callback) {
+function loadJSON(path, callback) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
-    xobj.open('GET', 'map_data.json', true);
+    xobj.open('GET', path, true);
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
@@ -32,7 +32,6 @@ function addAllMarkers(data) {
     }
     var clusterer = new MarkerClusterer(map, markers,
         {imagePath: 'markerclusterer/img/m', averageCenter: true});
-
 }
 
 function addMarker(params) {
@@ -81,6 +80,12 @@ function addMarker(params) {
     return marker;
 }
 
+function updateMapStyle(data) {
+    var styledMapType = new google.maps.styledMapType(data);
+    map.mapTypes.set('styled_map', styledMapType);
+    map.setMapTypeId('styled_map');
+}
+
 function initMap() {
     var options = {
         zoom:7,
@@ -91,5 +96,6 @@ function initMap() {
         center: SCOTLAND_COORDS
     };
     map = new google.maps.Map(document.getElementById('map'), options);
-    loadJSON(addAllMarkers)
+    loadJSON('map_style.json', updateMapStyle);
+    loadJSON('map_data.json', addAllMarkers);
 }
