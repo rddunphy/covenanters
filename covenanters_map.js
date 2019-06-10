@@ -67,8 +67,12 @@ function addMarker(params) {
         title:params.name
     });
     if (params.content !== null && params.content !== undefined) {
+        var imgDiv = "";
+        if (params.img !== null && params.img !== undefined) {
+            imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
+        }
         var infoWindow = new google.maps.InfoWindow({
-            content:"<h3>" + params.name + "</h3><div>" + params.content + "</div>"
+            content: "<h3>" + params.name + "</h3><div>" + params.content + "</div>" + imgDiv
         });
         marker.addListener('click', function() {
             infoWindow.open(map, marker);

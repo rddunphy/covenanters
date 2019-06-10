@@ -4,20 +4,21 @@
         "lng":-2.7873,
         "name":"Grave of Samuel Rutherford",
         "type":"grave",
-        "content":"In St Andrews Cathedral."
+        "content":"<p>In St Andrews Cathedral.</p>"
     },
     {
         "lat":55.8624,
         "lng":-4.2386,
         "name":"St Mungo Museum of Religion",
         "type":"museum",
-        "content":"<a href='https://www.glasgowlife.org.uk/museums/venues/st-mungo-museum-of-religious-life-and-art'>website</a>"
+        "content":"<p><a href='https://www.glasgowlife.org.uk/museums/venues/st-mungo-museum-of-religious-life-and-art'>website</a></p>"
     },
     {
         "lat":55.8630,
         "lng":-4.2346,
         "name":"Glasgow Cathedral",
         "type":"church",
-        "content":"St Mungo's Cathedral, built in 1136."
+        "content":"<p>St Mungo's Cathedral, built in 1136.</p>",
+        "img":"Glasgowcathedral.jpg"
     }
 ]
