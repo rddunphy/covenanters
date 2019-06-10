@@ -1,4 +1,15 @@
 
+const UK_BOUNDS = {
+    north: 61.0,
+    south: 49.9,
+    west: -10.5,
+    east: 1.8
+};
+const SCOTLAND_COORDS = {
+    lat:56.5,
+    lng:-4.2
+};
+
 var map;
 
 function loadJSON(callback) {
@@ -20,7 +31,7 @@ function addAllMarkers(data) {
         markers.push(addMarker(data[i]));
     }
     var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            {imagePath: 'markerclusterer/img/m'});
 
 }
 
@@ -67,16 +78,6 @@ function addMarker(params) {
 }
 
 function initMap() {
-    var UK_BOUNDS = {
-        north: 60.98,
-        south: 49.91,
-        west: -10.52,
-        east: 1.80
-    };
-    var SCOTLAND_COORDS = {
-        lat:56.4907,
-        lng:-4.2026
-    };
     var options = {
         zoom:7,
         restriction: {
