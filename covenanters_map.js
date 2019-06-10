@@ -65,9 +65,9 @@ function addMarker(params) {
         map_icon_label: '<span class="map-icon map-icon-' + icon + '"></span>',
         title:params.name
     });
-    if (params.content !== null && params.content !== undefined) {
+    if (params.content !== null && typeof params.content !== "undefined") {
         var imgDiv = "";
-        if (params.img !== null && params.img !== undefined) {
+        if (params.img !== null && typeof params.img !== "undefined") {
             imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
         }
         var infoWindow = new google.maps.InfoWindow({
@@ -75,7 +75,12 @@ function addMarker(params) {
                 + "</div>" + imgDiv + "</div>"
         });
         marker.addListener('click', function() {
-            infoWindow.open(map, marker);
+            var m = infoWindow.getMap();
+            if (m !== null && typeof m !== "undefined") {
+                infoWindow.open(map, marker);
+            } else {
+                infoWindow.close();
+            }
         });
     }
     return marker;
@@ -89,7 +94,7 @@ function updateMapStyle(data) {
 
 function initMap() {
     var options = {
-        zoom:7,
+        zoom: 7,
         restriction: {
             latLngBounds: UK_BOUNDS,
             strictBounds: false,
