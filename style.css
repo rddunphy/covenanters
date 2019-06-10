@@ -1,7 +1,16 @@
+#wrapper {
+    text-align: center;
+}
 
 #map {
+    margin: 0 auto;
     height: 600px;
     width: 1000px;
+}
+
+#footer {
+    margin-top: 20px;
+    font-size: 15px;
 }
 
 .map-icon-label .map-icon {
