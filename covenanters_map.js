@@ -110,7 +110,7 @@ function addMarker(params) {
             infoWindow.setOpenedState(false);
         });
         marker.addListener('click', function() {
-            infoWindow.open(map, marker);
+            infoWindow.toggle(map, marker);
         });
     }
     return marker;
