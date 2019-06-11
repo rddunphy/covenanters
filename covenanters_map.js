@@ -12,6 +12,36 @@ const SCOTLAND_COORDS = {
 
 var map;
 
+google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
+google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
+google.maps.InfoWindow.prototype._openedState = false;
+
+google.maps.InfoWindow.prototype.open = function(map, anchor) {
+    this._openedState = true;
+    this._open(map, anchor);
+};
+
+google.maps.InfoWindow.prototype.close = function() {
+    this._openedState = false;
+    this._close();
+};
+
+google.maps.InfoWindow.prototype.getOpenedState = function() {
+    return this._openedState;
+};
+
+google.maps.InfoWindow.prototype.setOpenedState = function(val) {
+    this._openedState = val;
+};
+
+google.maps.InfoWindow.prototype.toggle = function(map, anchor) {
+    if (this.getOpenedState()) {
+        this.close();
+    } else {
+        this.open(map, anchor);
+    }
+};
+
 function loadJSON(path, callback) {
     var xobj = new XMLHttpRequest();
     xobj.overrideMimeType("application/json");
@@ -74,8 +104,11 @@ function addMarker(params) {
             content: "<div class=info-window-wrapper><h3>" + params.name + "</h3><div>" + params.content
                 + "</div>" + imgDiv + "</div>"
         });
+        google.maps.event.addListener(infoWindow, "closeclick", function (e) {
+            infoWindow.setOpenedState(false);
+        });
         marker.addListener('click', function() {
-            infoWindow.open(map, marker);
+            infoWindow.toggle(map, marker);
         });
     }
     return marker;
