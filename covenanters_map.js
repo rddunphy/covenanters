@@ -12,35 +12,37 @@ const SCOTLAND_COORDS = {
 
 var map;
 
-google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
-google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
-google.maps.InfoWindow.prototype._openedState = false;
+function setUpInfoWindowToggle() {
+    google.maps.InfoWindow.prototype._open = google.maps.InfoWindow.prototype.open;
+    google.maps.InfoWindow.prototype._close = google.maps.InfoWindow.prototype.close;
+    google.maps.InfoWindow.prototype._openedState = false;
 
-google.maps.InfoWindow.prototype.open = function(map, anchor) {
-    this._openedState = true;
-    this._open(map, anchor);
-};
+    google.maps.InfoWindow.prototype.open = function(map, anchor) {
+        this._openedState = true;
+        this._open(map, anchor);
+    };
 
-google.maps.InfoWindow.prototype.close = function() {
-    this._openedState = false;
-    this._close();
-};
+    google.maps.InfoWindow.prototype.close = function() {
+        this._openedState = false;
+        this._close();
+    };
 
-google.maps.InfoWindow.prototype.getOpenedState = function() {
-    return this._openedState;
-};
+    google.maps.InfoWindow.prototype.getOpenedState = function() {
+        return this._openedState;
+    };
 
-google.maps.InfoWindow.prototype.setOpenedState = function(val) {
-    this._openedState = val;
-};
+    google.maps.InfoWindow.prototype.setOpenedState = function(val) {
+        this._openedState = val;
+    };
 
-google.maps.InfoWindow.prototype.toggle = function(map, anchor) {
-    if (this.getOpenedState()) {
-        this.close();
-    } else {
-        this.open(map, anchor);
-    }
-};
+    google.maps.InfoWindow.prototype.toggle = function(map, anchor) {
+        if (this.getOpenedState()) {
+            this.close();
+        } else {
+            this.open(map, anchor);
+        }
+    };
+}
 
 function loadJSON(path, callback) {
     var xobj = new XMLHttpRequest();
@@ -108,7 +110,7 @@ function addMarker(params) {
             infoWindow.setOpenedState(false);
         });
         marker.addListener('click', function() {
-            infoWindow.toggle(map, marker);
+            infoWindow.open(map, marker);
         });
     }
     return marker;
@@ -130,6 +132,7 @@ function initMap() {
         center: SCOTLAND_COORDS
     };
     map = new google.maps.Map(document.getElementById('map'), options);
+    setUpInfoWindowToggle();
     loadJSON('map_style.json', updateMapStyle);
     loadJSON('map_data.json', addAllMarkers);
 }
