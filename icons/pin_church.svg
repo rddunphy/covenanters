@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="pin_church.svg"
+   inkscape:export-filename="/home/david/Sites/covenanters/icons/pin_church.png"
+   inkscape:export-xdpi="25.929178"
+   inkscape:export-ydpi="25.929178">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="367.82144"
+     inkscape:cy="955.84702"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="832"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:#ffd42a;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 82.718434,25.54891 c -9.8,0 -17.7,7.8 -17.7,17.4 0,15.5 17.7,30.6 17.7,30.6 0,0 17.699996,-15.4 17.699996,-30.6 0,-9.6 -7.899996,-17.4 -17.699996,-17.4 z"
+       id="path869"
+       inkscape:connector-curvature="0" />
+    <path
+       id="rect897-3"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.23529005;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 89.864715,45.025438 1.239955,0.45965 0.207867,-0.600126 -8.594357,-3.180406 c -2.933644,1.073955 -5.678878,2.057777 -8.594345,3.180411 l 0.207867,0.600127 1.239943,-0.45965 v 9.894198 l 4.891374,0.02485 0.0012,-4.672322 c 0,-1.245196 1.009595,-2.25457 2.254785,-2.25457 l -2.12e-4,1.2e-5 c 1.245202,-2e-6 2.254573,1.009373 2.254573,2.25457 l -0.0012,4.670599 4.892551,-0.02314 z m -4.500099,-8.677745 0.692953,0.686145 0.389205,-0.417898 -3.37373,-3.476573 0.0024,-1.391766 0.883561,0.0024 0.0024,-0.63047 -0.889055,2.2e-4 0.0024,-0.883579 -0.630472,-0.0028 0.0012,0.888877 -0.883585,-0.0022 -0.0024,0.630471 0.889055,-4.24e-4 -0.0059,1.390014 c -1.151027,1.158186 -2.302748,2.315677 -3.451681,3.475938 l 0.389205,0.417898 0.692964,-0.686145 v 5.401947 l 2.64579,-0.988833 2.645789,0.988833 z"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
