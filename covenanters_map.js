@@ -63,39 +63,16 @@ function addAllMarkers(data) {
         markers.push(addMarker(data[i]));
     }
     var clusterer = new MarkerClusterer(map, markers,
-        {imagePath: 'markerclusterer/img/m', averageCenter: true});
+        {imagePath: "markerclusterer/img/m", averageCenter: true});
 }
 
 function addMarker(params) {
-    switch(params.type) {
-        case 'grave':
-            var fillColor = '#858789';
-            var icon = 'cemetery';
-            break;
-        case 'museum':
-            var fillColor = '#96e281';
-            var icon = 'museum';
-            break;
-        case 'church':
-            var fillColor = '#f45c42';
-            var icon = 'church';
-            break;
-        default:
-            var fillColor = '#00CCBB';
-            var icon = 'point-of-interest';
-    }
-    var marker = new mapIcons.Marker({
+    var marker = new google.maps.Marker({
         position: {lat: params.lat, lng: params.lng},
         map: map,
-        icon: {
-            path: mapIcons.shapes.MAP_PIN,
-            fillColor: fillColor,
-            fillOpacity: 1,
-            strokeColor: '',
-            strokeWeight: 0
-        },
-        map_icon_label: '<span class="map-icon map-icon-' + icon + '"></span>',
-        title:params.name
+        icon: "icons/pin_" + params.type + ".png",
+        map_icon_label: "<span class='map-icon map-icon-" + icon + "'></span>",
+        title: params.name
     });
     if (params.content !== null && typeof params.content !== "undefined") {
         var imgDiv = "";
