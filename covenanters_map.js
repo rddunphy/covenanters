@@ -71,7 +71,6 @@ function addMarker(params) {
         position: {lat: params.lat, lng: params.lng},
         map: map,
         icon: "icons/pin_" + params.type + ".png",
-        map_icon_label: "<span class='map-icon map-icon-" + icon + "'></span>",
         title: params.name
     });
     if (params.content !== null && typeof params.content !== "undefined") {
