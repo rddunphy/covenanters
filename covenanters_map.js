@@ -7,8 +7,8 @@ const UK_BOUNDS = {
 };
 
 const SCOTLAND_COORDS = {
-    lat:56.5,
-    lng:-4.2
+    lat: 56.5,
+    lng: -4.2
 };
 
 const MAP_STYLE = [
@@ -283,10 +283,9 @@ function loadJSON(path, callback) {
     xobj.overrideMimeType("application/json");
     xobj.open('GET', path, true);
     xobj.onreadystatechange = function () {
-          if (xobj.readyState == 4 && xobj.status == "200") {
-            // Required use of an anonymous callback as .open will NOT return a value but simply returns undefined in asynchronous mode
+        if (xobj.readyState == 4 && xobj.status == "200") {
             callback(JSON.parse(xobj.responseText));
-          }
+        }
     };
     xobj.send(null);
 }
