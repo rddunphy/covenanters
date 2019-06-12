@@ -306,7 +306,7 @@ function addMarker(params) {
         icon: "icons/pin_" + params.type + ".png",
         title: params.name
     });
-    if (params.content !== null && typeof params.content !== "undefined") {
+    if (params.content !== null && typeof params.content !== "undefined" && params.content !== "") {
         var imgDiv = "";
         if (params.img !== null && typeof params.img !== "undefined") {
             imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
