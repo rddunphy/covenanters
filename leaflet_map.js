@@ -13,13 +13,14 @@ function loadJSON(path, callback) {
 }
 
 function addAllMarkers(data) {
-    var markers = [];
+    var markers = L.markerClusterGroup();
     for (var i = 0; i < data.length; i++) {
-        markers.push(addMarker(data[i]));
+        markers.addLayer(createMarker(data[i]));
     }
+	map.addLayer(markers);
 }
 
-function addMarker(params) {
+function createMarker(params) {
 	var icon = L.icon({
 		iconUrl: "icons/pin_" + params.type + ".png",
 		shadowUrl: "icons/shadow.png",
@@ -29,7 +30,7 @@ function addMarker(params) {
 		shadowAnchor: [18, 49],  // the same for the shadow
 		popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 	});
-    var marker = L.marker([params.lat, params.lng], {icon: icon}).addTo(map);
+    var marker = L.marker([params.lat, params.lng], {icon: icon});
     if (params.content !== null && typeof params.content !== "undefined" && params.content !== "") {
         var imgDiv = "";
         if (params.img !== null && typeof params.img !== "undefined") {
