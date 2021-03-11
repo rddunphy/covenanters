@@ -26,20 +26,18 @@ function createMarker(params) {
 		shadowUrl: "icons/shadow.png",
 		iconSize:     [36, 49], // size of the icon
 		shadowSize:   [55, 49], // size of the shadow
-		iconAnchor:   [18, 49], // point of the icon which will correspond to marker's location
-		shadowAnchor: [18, 49],  // the same for the shadow
+		iconAnchor:   [18.5, 49], // point of the icon which will correspond to marker's location
+		shadowAnchor: [18.5, 49],  // the same for the shadow
 		popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 	});
     var marker = L.marker([params.lat, params.lng], {icon: icon});
-    if (params.content !== null && typeof params.content !== "undefined" && params.content !== "") {
-        var imgDiv = "";
-        if (params.img !== null && typeof params.img !== "undefined") {
-            imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
-        }
-        var content = "<div class=info-window-wrapper><h3>" + params.name + "</h3><div>" + params.content
-                + "</div>" + imgDiv + "</div>";
-        marker.bindPopup(content);
-    }
+	var imgDiv = "";
+	if (params.img !== null && typeof params.img !== "undefined") {
+		imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
+	}
+	var content = "<div class=info-window-wrapper><h3>" + params.name + "</h3><div>" + params.content
+		+ "</div>" + imgDiv + "</div>";
+	marker.bindPopup(content);
 	return marker;
 }
 
