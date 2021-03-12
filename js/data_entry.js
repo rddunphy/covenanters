@@ -61,12 +61,43 @@ function populateData(data) {
 	document.getElementById("lng").value = data.lng;
 	document.getElementById("type").value = data.type;
 	document.getElementById("content").value = data.content;
+	updateMarker();
+	document.getElementById("lat").addEventListener("change", updateMarker);
+	document.getElementById("lng").addEventListener("change", updateMarker);
+}
+
+function handleMapClick(e) {
+	var coord = e.latlng;
+	var lat = coord.lat;
+	var lng = coord.lng;
+	document.getElementById("lat").value = lat;
+	document.getElementById("lng").value = lng;
+	if (marker) {
+		map.removeLayer(marker);
+	}
+	marker = L.marker([lat, lng]).addTo(map);
+}
+
+function updateMarker() {
+	var lat = parseFloat(document.getElementById("lat").value);
+	var lng = parseFloat(document.getElementById("lng").value);
+	if (lat && lng) {
+		if (marker) {
+			map.removeLayer(marker);
+		}
+		marker = L.marker([lat, lng]).addTo(map);
+	}
 }
 
 const id = new URLSearchParams(window.location.search).get("id");
 const db = firebase.firestore();
+var map;
+var marker;
 
 window.onload = function() {
+	map = L.map('map').setView([56.0, -4.0], 8);
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+	map.on("click", handleMapClick);
 	if (id) {
 		document.getElementById("submit").disabled = true;
 		document.getElementById("title").innerHTML = "Covenanters map - edit entry";

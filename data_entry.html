@@ -6,6 +6,9 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>Covenanters map - data entry</title>
 		<link rel="icon" type="image/png" href="icons/favicon.png" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" crossorigin="" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" crossorigin="" />
 	</head>
 	<body>
 		<div id="wrapper">
@@ -32,10 +35,13 @@
 				<input type="button" value="Submit" id="submit" onclick="submitEntry();">
 				<div id="feedback" hidden></div>
 			</form>
+			<div id="map" style="height:300px;width:400px"></div>
 		</div>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+		<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster-src.js" crossorigin=""></script>
 		<script src="js/firebase_setup.js"></script>
 		<script src="js/data_entry.js"></script>
 	</body>
