@@ -1,9 +1,33 @@
 var deleteButton = function(cell, formatterParams) {
-    return "<input type=\"button\" value=\"Delete\">";
+    return "<i class=\"fas fa-trash-alt\"></i>";
 };
 
 var editButton = function(cell, formatterParams) {
-	return "<input type=\"button\" value=\"Edit\">";
+    return "<i class=\"fas fa-edit\"></i>";
+};
+
+const typeColours = {
+	church: "#ffd42a",
+	museum: "#5fd35f",
+	grave: "#c8b7b7",
+	monument: "#f58dd3",
+	battle: "#c83737",
+	castle: "#ff7f2a"
+};
+
+const typeStrings = {
+	church: "Church",
+	museum: "Museum",
+	castle: "Castle",
+	battle: "Battlefield",
+	monument: "Monument",
+	grave: "Gravesite"
+};
+
+var locationType = function(cell, formatterParams) {
+	var val = cell.getValue();
+	cell.getElement().style.backgroundColor = typeColours[val];
+	return typeStrings[val];
 };
 
 function deleteEntry(row) {
@@ -30,10 +54,10 @@ function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: deleteButton, align:"center", cellClick: function(e, cell){
+			{formatter: deleteButton, hozAlign:"center", cellClick: function(e, cell){
 				deleteEntry(cell.getRow());
 			}}, //width: 40, 
-			{formatter: editButton, align:"center", cellClick: function(e, cell){
+			{formatter: editButton, hozAlign:"center", cellClick: function(e, cell){
 				editEntry(cell.getRow());
 			}}, //width: 40, 
 			{title: "Name", field: "name"},
@@ -42,9 +66,9 @@ function generateTable(data) {
 				outputFormat: "DD/MM/YY HH:mm:ss",
 				invalidPlaceholder: "NaN",
 			}},
-			{title: "Location type", field: "type"},
-			{title: "Latitude", field: "lat"},
-			{title: "Longitude", field: "lng"},
+			{title: "Type", field: "type", formatter: locationType},
+			{title: "Latitude", field: "lat", sorter:"number"},
+			{title: "Longitude", field: "lng", sorter:"number"},
 			{title: "Description", field: "content"}
 		],
 		layout: "fitDataStretch",
