@@ -37,6 +37,11 @@ function generateTable(data) {
 				editEntry(cell.getRow());
 			}}, //width: 40, 
 			{title: "Name", field: "name"},
+			{title: "Last update", field: "timestamp", formatter: "datetime", formatterParams: {
+				inputFormat: "X",
+				outputFormat: "DD/MM/YY HH:mm:ss",
+				invalidPlaceholder: "NaN",
+			}},
 			{title: "Location type", field: "type"},
 			{title: "Latitude", field: "lat"},
 			{title: "Longitude", field: "lng"},
@@ -59,6 +64,9 @@ window.onload = function() {
 		querySnapshot.forEach((doc) => {
 			entry = doc.data();
 			entry.id = doc.id;
+			if (doc.data().updated) {
+				entry.timestamp = doc.data().updated.seconds;
+			}
 			tabledata.push(entry);
 		});
 		generateTable(tabledata);

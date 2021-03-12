@@ -4,7 +4,8 @@ function getEntryData() {
 		type: document.getElementById("type").value,
 		lat: document.getElementById("lat").value,
 		lng: document.getElementById("lng").value,
-		content: document.getElementById("content").value
+		content: document.getElementById("content").value,
+		updated: firebase.firestore.FieldValue.serverTimestamp()
 	};
 	return data;
 }
