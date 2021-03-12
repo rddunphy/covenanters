@@ -100,7 +100,7 @@ window.onload = function() {
 	map.on("click", handleMapClick);
 	if (id) {
 		document.getElementById("submit").disabled = true;
-		document.getElementById("title").innerHTML = "Covenanters map - edit entry";
+		document.getElementById("title").innerHTML = "Edit entry";
 		var entry = db.collection("map_entries").doc(id).get()
 		.then((doc) => {
 			if (doc.exists) {

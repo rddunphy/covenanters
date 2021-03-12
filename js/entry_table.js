@@ -56,15 +56,15 @@ function generateTable(data) {
 		columns: [
 			{formatter: deleteButton, hozAlign:"center", download: false, cellClick: function(e, cell){
 				deleteEntry(cell.getRow());
-			}}, //width: 40, 
+			}},
 			{formatter: editButton, hozAlign:"center", download: false, cellClick: function(e, cell){
 				editEntry(cell.getRow());
-			}}, //width: 40, 
+			}},
 			{title: "Name", field: "name"},
 			{title: "Last update", field: "timestamp", download: false, formatter: "datetime", formatterParams: {
 				inputFormat: "X",
 				outputFormat: "DD/MM/YY HH:mm:ss",
-				invalidPlaceholder: "NaN",
+				invalidPlaceholder: "NaN"
 			}},
 			{title: "Type", field: "type", formatter: locationType},
 			{title: "Latitude", field: "lat", sorter: "number", formatter: "money", formatterParams: {
