@@ -54,14 +54,14 @@ function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: deleteButton, hozAlign:"center", cellClick: function(e, cell){
+			{formatter: deleteButton, hozAlign:"center", download: false, cellClick: function(e, cell){
 				deleteEntry(cell.getRow());
 			}}, //width: 40, 
-			{formatter: editButton, hozAlign:"center", cellClick: function(e, cell){
+			{formatter: editButton, hozAlign:"center", download: false, cellClick: function(e, cell){
 				editEntry(cell.getRow());
 			}}, //width: 40, 
 			{title: "Name", field: "name"},
-			{title: "Last update", field: "timestamp", formatter: "datetime", formatterParams: {
+			{title: "Last update", field: "timestamp", download: false, formatter: "datetime", formatterParams: {
 				inputFormat: "X",
 				outputFormat: "DD/MM/YY HH:mm:ss",
 				invalidPlaceholder: "NaN",
@@ -78,10 +78,16 @@ function generateTable(data) {
 		history: true,
 		tooltips: true
 	});
+	return table;
+}
+
+function downloadData() {
+	table.download("csv", "covenanters_data.csv");
 }
 
 const db = firebase.firestore();
 const tabledata = [];
+var table;
 
 window.onload = function() {
 	db.collection("map_entries").get().then((querySnapshot) => {
@@ -93,6 +99,6 @@ window.onload = function() {
 			}
 			tabledata.push(entry);
 		});
-		generateTable(tabledata);
+		table = generateTable(tabledata);
 	});
 }
