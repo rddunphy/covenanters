@@ -1,16 +1,5 @@
+const db = firebase.firestore();
 var map;
-
-function loadJSON(path, callback) {
-    var xobj = new XMLHttpRequest();
-    xobj.overrideMimeType("application/json");
-    xobj.open('GET', path, true);
-    xobj.onreadystatechange = function () {
-        if (xobj.readyState == 4 && xobj.status == "200") {
-            callback(JSON.parse(xobj.responseText));
-        }
-    };
-    xobj.send(null);
-}
 
 function addAllMarkers(data) {
     var markers = L.markerClusterGroup();
@@ -31,12 +20,8 @@ function createMarker(params) {
 		popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 	});
     var marker = L.marker([params.lat, params.lng], {icon: icon});
-	var imgDiv = "";
-	if (params.img !== null && typeof params.img !== "undefined") {
-		imgDiv = "<div><img class=info-window-img src='img/" + params.img + "' /></div>";
-	}
 	var content = "<div class=info-window-wrapper><h3>" + params.name + "</h3><div>" + params.content
-		+ "</div>" + imgDiv + "</div>";
+		+ "</div></div>";
 	marker.bindPopup(content);
 	return marker;
 }
@@ -44,6 +29,12 @@ function createMarker(params) {
 window.onload = function() {
 	map = L.map('map').setView([56.0, -4.0], 8);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
-    loadJSON('map_data.json', addAllMarkers);
+	var markerData = [];
+	db.collection("map_entries").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			markerData.push(doc.data());
+		});
+		addAllMarkers(markerData);
+	});
 }
 
