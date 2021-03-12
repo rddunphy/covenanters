@@ -67,8 +67,12 @@ function generateTable(data) {
 				invalidPlaceholder: "NaN",
 			}},
 			{title: "Type", field: "type", formatter: locationType},
-			{title: "Latitude", field: "lat", sorter:"number"},
-			{title: "Longitude", field: "lng", sorter:"number"},
+			{title: "Latitude", field: "lat", sorter: "number", formatter: "money", formatterParams: {
+				precision: 5, symbol: "&deg;", symbolAfter: true, thousand: ""
+			}},
+			{title: "Longitude", field: "lng", sorter: "number", formatter: "money", formatterParams: {
+				precision: 5, symbol: "&deg;", symbolAfter: true, thousand: ""
+			}},
 			{title: "Description", field: "content"}
 		],
 		layout: "fitDataStretch",
