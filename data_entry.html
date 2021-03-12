@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>Covenanters map - data entry</title>
+		<link rel="icon" type="image/png" href="icons/favicon.png" />
+	</head>
+	<body>
+		<div id="wrapper">
+			<h1 id="title">Covenanters map - new entry</h1>
+			<form>
+				<label for="name">Name:</label><br>
+				<input type="text" id="name" name="name"><br>
+				<label for="type">Location type:</label><br>
+				<select id="type" name="type">
+					<option value="church">Church</option>
+					<option value="museum">Museum</option>
+					<option value="castle">Castle</option>
+					<option value="battle">Battlefield</option>
+					<option value="monument">Monument</option>
+					<option value="grave">Gravesite</option>
+				</select><br>
+				<label for="lat">Latitude:</label><br>
+				<input type="text" id="lat" name="lat"><br>
+				<label for="lng">Longitude:</label><br>
+				<input type="text" id="lng" name="lng"><br>
+				<label for="content">Description:</label><br>
+				<input type="text" id="content" name="content"><br>
+				<input type="button" value="Cancel" onclick="returnToOverview();">
+				<input type="button" value="Submit" id="submit" onclick="submitEntry();">
+				<div id="feedback" hidden></div>
+			</form>
+		</div>
+		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
+		<script src="js/firebase_setup.js"></script>
+		<script src="js/data_entry.js"></script>
+	</body>
+</html>

@@ -1,7 +1,41 @@
+var deleteButton = function(cell, formatterParams) {
+    return "<input type=\"button\" value=\"Delete\">";
+};
+
+var editButton = function(cell, formatterParams) {
+	return "<input type=\"button\" value=\"Edit\">";
+};
+
+function deleteEntry(row) {
+	var entry = row.getData();
+	var del = confirm("Are you sure you want to permanently delete the entry for \"" + entry.name + "\"?");
+	if (del) {
+		document.getElementById("feedback").hidden = false;
+		document.getElementById("feedback").innerHTML = "Deleting entry \"" + entry.name + "\"...";
+		db.collection("map_entries").doc(entry.id).delete().then(() => {
+			row.delete();
+			document.getElementById("feedback").innerHTML = "Entry \"" + entry.name + "\" successfully deleted.";
+		}).catch((error) => {
+			console.error("Error removing Firestore document: ", error);
+			document.getElementById("feedback").innerHTML = "Error deleting entry \"" + entry.name + "\": " + error;
+		});
+	}
+}
+
+function editEntry(row) {
+	window.location = "data_entry.html?id=" + row.getData().id;
+}
+
 function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
+			{formatter: deleteButton, align:"center", cellClick: function(e, cell){
+				deleteEntry(cell.getRow());
+			}}, //width: 40, 
+			{formatter: editButton, align:"center", cellClick: function(e, cell){
+				editEntry(cell.getRow());
+			}}, //width: 40, 
 			{title: "Name", field: "name"},
 			{title: "Location type", field: "type"},
 			{title: "Latitude", field: "lat"},
@@ -17,27 +51,16 @@ function generateTable(data) {
 	});
 }
 
-var firebaseConfig = {
-	apiKey: "AIzaSyCI1aiMpQQaYKrzO4O6JEAYRRkbfkDXW6M",
-	authDomain: "covenanters-map.firebaseapp.com",
-	projectId: "covenanters-map",
-	storageBucket: "covenanters-map.appspot.com",
-	messagingSenderId: "105187403918",
-	appId: "1:105187403918:web:4564468ce038ff072301df",
-	measurementId: "G-MJ0RKJF47X"
-};
+const db = firebase.firestore();
+const tabledata = [];
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
-
-var db = firebase.firestore();
-var tabledata = [];
-db.collection("map_entries").get().then((querySnapshot) => {
-	querySnapshot.forEach((doc) => {
-		entry = doc.data();
-		entry.id = doc.id;
-		tabledata.push(entry);
+window.onload = function() {
+	db.collection("map_entries").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			entry = doc.data();
+			entry.id = doc.id;
+			tabledata.push(entry);
+		});
+		generateTable(tabledata);
 	});
-	generateTable(tabledata);
-});
+}
