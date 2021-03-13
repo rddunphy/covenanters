@@ -1,3 +1,5 @@
+const initLat = new URLSearchParams(window.location.search).get("lat");
+const initLng = new URLSearchParams(window.location.search).get("lng");
 const db = firebase.firestore();
 var map;
 
@@ -20,14 +22,22 @@ function createMarker(params) {
 		popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 	});
     var marker = L.marker([params.lat, params.lng], {icon: icon});
-	var content = "<div class=info-window-wrapper><h3>" + params.name + "</h3><div>" + params.content
+	var content = "<div class=\"info-window-wrapper\"><h3>" + params.name + "</h3><div>" + params.content
 		+ "</div></div>";
 	marker.bindPopup(content);
 	return marker;
 }
 
 window.onload = function() {
-	map = L.map('map').setView([56.0, -4.0], 8);
+	var lat = 56.0;
+	var lng = -4.0;
+	var zoom = 8;
+	if (initLat && initLng) {
+		lat = initLat;
+		lng = initLng;
+		zoom = 15;
+	}
+	map = L.map('map').setView([lat, lng], zoom);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 	var markerData = [];
 	db.collection("map_entries").get().then((querySnapshot) => {

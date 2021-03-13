@@ -6,6 +6,10 @@ var editButton = function(cell, formatterParams) {
     return "<i class=\"fas fa-edit\"></i>";
 };
 
+var mapButton = function(cell, formatterParams) {
+	return "<i class=\"fas fa-map-marked-alt\"></i>";
+};
+
 const typeColours = {
 	church: "#ffd42a",
 	museum: "#5fd35f",
@@ -50,15 +54,22 @@ function editEntry(row) {
 	window.location = "data_entry.html?id=" + row.getData().id;
 }
 
+function goToMap(row) {
+	window.location = "index.html?lat=" + row.getData().lat + "&lng=" + row.getData().lng;
+}
+
 function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: deleteButton, hozAlign:"center", download: false, cellClick: function(e, cell){
+			{formatter: deleteButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
 				deleteEntry(cell.getRow());
 			}},
-			{formatter: editButton, hozAlign:"center", download: false, cellClick: function(e, cell){
+			{formatter: editButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
 				editEntry(cell.getRow());
+			}},
+			{formatter: mapButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
+				goToMap(cell.getRow());
 			}},
 			{title: "Name", field: "name"},
 			{title: "Last update", field: "timestamp", download: false, formatter: "datetime", formatterParams: {
