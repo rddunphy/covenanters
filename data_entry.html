@@ -34,7 +34,7 @@
 							<div class="row">
 								<div class="col">
 									<label for="name" class="form-label">Name</label><br>
-									<input type="text" id="name" name="name" class="form-control"><br>
+									<input type="text" id="name" name="name" class="form-control" required><br>
 									<label for="type" class="form-label">Location type</label><br>
 									<select id="type" name="type" class="form-select">
 										<option value="church">Church</option>
@@ -46,21 +46,21 @@
 									</select>
 								</div>
 								<div class="col">
-									<label for="lat" class="form-label">Latitude</label><br>
+									<label for="lat" class="form-label" required>Latitude</label><br>
 									<input type="text" id="lat" name="lat" class="form-control"><br>
-									<label for="lng" class="form-label">Longitude</label><br>
+									<label for="lng" class="form-label" required>Longitude</label><br>
 									<input type="text" id="lng" name="lng" class="form-control"><br>
 								</div>
 							</div>
 							<div class="row gap-2">
 								<div class="d-grid">
 									<label for="content" class="form-label">Description</label><br>
-									<textarea type="text" id="content" name="content" class="form-control" rows="4"></textarea><br>
+									<textarea type="text" id="content" name="content" class="form-control" rows="12"></textarea><br>
 								</div>
 								<div id="feedback" class="d-grid invalid-feedback" hidden></div>
 								<div class="d-grid gap-2 d-md-block">
 									<button type="button" class="btn btn-outline-secondary" onclick="returnToOverview();">Cancel</button>
-									<button type="button" id="submit" class="btn btn-outline-primary" onclick="submitEntry();">Submit</button>
+									<button type="submit" id="submit" class="btn btn-outline-primary" onclick="submitEntry();">Save</button>
 								</div>
 							</div>
 						</form>
@@ -80,6 +80,7 @@
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
 		<script src="https://kit.fontawesome.com/740521db32.js" crossorigin="anonymous"></script>
+		<script src="https://cdn.tiny.cloud/1/3ww3ciiibppy1qij4vox3c55obqkh97xo3t7t2luhdxu4luf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 		<script src="js/firebase_setup.js"></script>
 		<script src="js/data_entry.js"></script>

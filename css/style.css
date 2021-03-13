@@ -29,10 +29,6 @@ main {
     font-size: 15px;
 }
 
-.info-window-img {
-    width: 250px;
-}
-
 .info-window-wrapper {
     text-align: left;
 }
@@ -43,4 +39,13 @@ main {
 
 .info-window-wrapper h2 {
 	font-size: 1.4em;
+}
+
+.info-window-wrapper h3 {
+	font-size: 1.2em;
+}
+
+.info-window-wrapper img {
+	max-width: 250px;
+	height: auto;
 }

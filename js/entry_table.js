@@ -82,6 +82,7 @@ function generateTable(data) {
 				hozAlign:"center",
 				download: false,
 				width: 40,
+				resizable: false,
 				headerSort: false,
 				tooltip: "Edit entry",
 				cellClick: function(e, cell) {
@@ -93,6 +94,7 @@ function generateTable(data) {
 				hozAlign:"center",
 				download: false,
 				width: 40,
+				resizable: false,
 				headerSort: false,
 				tooltip: "Show on map",
 				cellClick: function(e, cell) {

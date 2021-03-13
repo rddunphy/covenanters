@@ -1,0 +1,16 @@
+h1 {
+	font-size: 1.6em;
+}
+
+h2 {
+	font-size: 1.4em;
+}
+
+h3 {
+	font-size: 1.2em;
+}
+
+img {
+	max-width: 250px;
+	height: auto;
+}

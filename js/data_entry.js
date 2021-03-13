@@ -4,41 +4,48 @@ function getEntryData() {
 		type: document.getElementById("type").value,
 		lat: parseFloat(document.getElementById("lat").value),
 		lng: parseFloat(document.getElementById("lng").value),
-		content: document.getElementById("content").value,
+		content: tinymce.get("content").getContent(),
 		updated: firebase.firestore.FieldValue.serverTimestamp()
 	};
 	return data;
 }
 
-function submitEntry() {
-	document.getElementById("submit").disabled = true;
+function submitSuccess(id) {
+	console.log("Document with ID ", id, " updated");
+	document.getElementById("submit").innerHTML = "Save";
+	returnToOverviewAfter(1000);
+}
+
+function submitError(error) {
+	console.error("Error adding document to Firestore: ", error);
+	document.getElementById("submit").innerHTML = "Save";
 	document.getElementById("feedback").hidden = false;
-	document.getElementById("feedback").innerHTML = "Submitting new entry...";
+	document.getElementById("feedback").innerHTML = "Error while uploading entry to database:<br>" + error;
+	document.getElementById("submit").disabled = false;
+}
+
+function submitEntry() {
 	data = getEntryData();
-	if (id) {
-		db.collection("map_entries").doc(id).set(data)
-		.then(() => {
-			console.log("Document with ID ", id, " updated");
-			document.getElementById("feedback").innerHTML = "Entry updated in database.<br>Returning to overview...";
-			returnToOverviewAfter(1000);
-		})
-		.catch((error) => {
-			console.error("Error adding document to Firestore: ", error);
-			document.getElementById("feedback").innerHTML = "Error while uploading entry to database:<br>" + error;
-			document.getElementById("submit").disabled = false;
-		});
-	} else {
-		db.collection("map_entries").add(data)
-		.then((docRef) => {
-			console.log("Document written with ID ", docRef.id);
-			document.getElementById("feedback").innerHTML = "New entry uploaded to database.<br>Returning to overview...";
-			returnToOverviewAfter(1000);
-		})
-		.catch((error) => {
-			console.error("Error adding document to Firestore: ", error);
-			document.getElementById("feedback").innerHTML = "Error while uploading entry to database:<br>" + error;
-			document.getElementById("submit").disabled = false;
-		});
+	if (data.name && data.lat && data.lng) {
+		document.getElementById("submit").disabled = true;
+		document.getElementById("submit").innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>";
+		if (id) {
+			db.collection("map_entries").doc(id).set(data)
+				.then(() => {
+					submitSuccess(id);
+				})
+				.catch((error) => {
+					submitError(error);
+				});
+		} else {
+			db.collection("map_entries").add(data)
+				.then((docRef) => {
+					submitSuccess(docRef.id);
+				})
+				.catch((error) => {
+					submitError(error);
+				});
+		}
 	}
 }
 
@@ -60,16 +67,17 @@ function populateData(data) {
 	document.getElementById("lat").value = data.lat;
 	document.getElementById("lng").value = data.lng;
 	document.getElementById("type").value = data.type;
-	document.getElementById("content").value = data.content;
+	tinymce.get("content").setContent(data.content);
 	updateMarker();
 }
 
 function bindDataListeners() {
-	document.getElementById("name").addEventListener("change", updateMarker);
+	document.getElementById("name").addEventListener("input", (e) => {
+		markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
+	});
 	document.getElementById("lat").addEventListener("change", updateMarker);
 	document.getElementById("lng").addEventListener("change", updateMarker);
 	document.getElementById("type").addEventListener("change", updateMarker);
-	document.getElementById("content").addEventListener("change", updateMarker);
 }
 
 function handleMapClick(e) {
@@ -82,25 +90,31 @@ function handleMapClick(e) {
 }
 
 function updateMarker() {
+	if (marker) {
+		map.removeLayer(marker);
+	}
 	var data = getEntryData();
 	if (data.lat && data.lng) {
-		if (marker) {
-			map.removeLayer(marker);
-		}
 		var icon = L.icon({
 			iconUrl: "icons/pin_" + data.type + ".png",
 			shadowUrl: "icons/shadow.png",
-			iconSize:     [36, 49], // size of the icon
-			shadowSize:   [55, 49], // size of the shadow
-			iconAnchor:   [18.5, 49], // point of the icon which will correspond to marker's location
-			shadowAnchor: [18.5, 49],  // the same for the shadow
-			popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
+			iconSize:     [36, 49],
+			shadowSize:   [55, 49],
+			iconAnchor:   [18.5, 49],
+			shadowAnchor: [18.5, 49],
+			popupAnchor:  [0, -49]
 		});
-		if (!data.name) {
-			data.name = "<span style=\"color:grey\">[Name]</span>";
-		}
 		marker = L.marker([data.lat, data.lng], {icon: icon}).addTo(map);
-		var content = "<div class=\"info-window-wrapper\"><h1>" + data.name + "</h1><div>" + data.content
+		markerPopupUpdate(data.name, data.content);
+	}
+}
+
+function markerPopupUpdate(title, body) {
+	if (marker) {
+		if (!title) {
+			title = "<span style=\"color:grey\">[Name]</span>";
+		}
+		var content = "<div class=\"info-window-wrapper\"><h1>" + title + "</h1><div>" + body
 			+ "</div></div>";
 		marker.bindPopup(content);
 		marker.openPopup();
@@ -113,6 +127,26 @@ var map;
 var marker;
 
 window.onload = function() {
+	tinymce.init({
+		selector: "#content",
+		resize: false,
+		plugins: "link lists image",
+		toolbar: "undo redo | styleselect | bold italic underline strikethrough superscript subscript | bullist numlist | link image ",
+		image_dimensions: false,
+		content_css: "css/tinymce_style.css",
+		style_formats: [
+			{title: "Heading", format: "h2"},
+			{title: "Subheading", format: "h3"},
+			{title: "Paragraph", format: "p"},
+			{title: "Blockquote", format: "blockquote"}
+		],
+		menubar: "",
+		init_instance_callback: function(editor) {
+			editor.on("input", function(e) {
+				markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
+			});
+		}
+	});
 	map = L.map('map').setView([56.0, -4.0], 8);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 	map.on("click", handleMapClick);
