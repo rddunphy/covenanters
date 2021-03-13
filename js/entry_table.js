@@ -77,33 +77,83 @@ function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: editButton, hozAlign:"center", download: false, width: 40, headerSort: false, tooltip: "Edit entry", cellClick: function(e, cell){
-				editEntry(cell.getRow());
-			}},
-			{formatter: mapButton, hozAlign:"center", download: false, width: 40, headerSort: false, tooltip: "Show on map", cellClick: function(e, cell){
-				goToMap(cell.getRow());
-			}},
-			{title: "Name", field: "name"},
-			{title: "Last update", field: "timestamp", download: false, formatter: "datetime", formatterParams: {
-				inputFormat: "X",
-				outputFormat: "DD/MM/YY HH:mm:ss",
-				invalidPlaceholder: "NaN"
-			}},
-			{title: "Type", field: "type", formatter: locationType},
-			{title: "Latitude", field: "lat", sorter: "number", formatter: "money", formatterParams: {
-				precision: 5, symbol: "&deg;", symbolAfter: true, thousand: ""
-			}},
-			{title: "Longitude", field: "lng", sorter: "number", formatter: "money", formatterParams: {
-				precision: 5, symbol: "&deg;", symbolAfter: true, thousand: ""
-			}},
-			{title: "Description", field: "content"}
+			{
+				formatter: editButton,
+				hozAlign:"center",
+				download: false,
+				width: 40,
+				headerSort: false,
+				tooltip: "Edit entry",
+				cellClick: function(e, cell) {
+					editEntry(cell.getRow());
+				}
+			},
+			{
+				formatter: mapButton,
+				hozAlign:"center",
+				download: false,
+				width: 40,
+				headerSort: false,
+				tooltip: "Show on map",
+				cellClick: function(e, cell) {
+					goToMap(cell.getRow());
+				}
+			},
+			{
+				title: "Name",
+				field: "name"
+			},
+			{
+				title: "Last updated",
+				field: "timestamp",
+				download: false,
+				formatter: "datetime",
+				formatterParams: {
+					inputFormat: "X",
+					outputFormat: "DD/MM/YY HH:mm:ss",
+					invalidPlaceholder: "NaN"
+				}
+			},
+			{
+				title: "Type",
+				field: "type",
+				formatter: locationType
+			},
+			{
+				title: "Latitude",
+				field: "lat",
+				sorter: "number",
+				formatter: "money",
+				formatterParams: {
+					precision: 5,
+					symbol: "&deg;",
+					symbolAfter: true,
+					thousand: ""
+				}
+			},
+			{
+				title: "Longitude",
+				field: "lng",
+				sorter: "number",
+				formatter: "money",
+				formatterParams: {
+					precision: 5,
+					symbol: "&deg;",
+					symbolAfter: true,
+					thousand: ""
+				}
+			},
+			{
+				title: "Description",
+				field: "content"
+			}
 		],
 		layout: "fitDataStretch",
 		selectable: true,
 		rowSelectionChanged: handleSelectionChange,
 		pagination: "local",
-		paginationSize: "25",
-		paginationSizeSelector: [10, 25, 50, 100],
+		paginationSize: "10",
+		paginationSizeSelector: true,
 		history: true,
 		tooltips: true,
 		initialSort: [{column: "name", dir: "asc"}]

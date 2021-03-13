@@ -78,10 +78,7 @@ function handleMapClick(e) {
 	var lng = coord.lng;
 	document.getElementById("lat").value = lat;
 	document.getElementById("lng").value = lng;
-	if (marker) {
-		map.removeLayer(marker);
-	}
-	marker = L.marker([lat, lng]).addTo(map);
+	updateMarker();
 }
 
 function updateMarker() {
@@ -99,6 +96,9 @@ function updateMarker() {
 			shadowAnchor: [18.5, 49],  // the same for the shadow
 			popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 		});
+		if (!data.name) {
+			data.name = "<span style=\"color:grey\">[Name]</span>";
+		}
 		marker = L.marker([data.lat, data.lng], {icon: icon}).addTo(map);
 		var content = "<div class=\"info-window-wrapper\"><h3>" + data.name + "</h3><div>" + data.content
 			+ "</div></div>";
