@@ -1,7 +1,3 @@
-var deleteButton = function(cell, formatterParams) {
-    return "<i class=\"fas fa-trash-alt\"></i>";
-};
-
 var editButton = function(cell, formatterParams) {
     return "<i class=\"fas fa-edit\"></i>";
 };
@@ -34,19 +30,30 @@ var locationType = function(cell, formatterParams) {
 	return typeStrings[val];
 };
 
-function deleteEntry(row) {
-	var entry = row.getData();
-	var del = confirm("Are you sure you want to permanently delete the entry for \"" + entry.name + "\"?");
-	if (del) {
-		document.getElementById("feedback").hidden = false;
-		document.getElementById("feedback").innerHTML = "Deleting entry \"" + entry.name + "\"...";
-		db.collection("map_entries").doc(entry.id).delete().then(() => {
-			row.delete();
-			document.getElementById("feedback").innerHTML = "Entry \"" + entry.name + "\" successfully deleted.";
-		}).catch((error) => {
-			console.error("Error removing Firestore document: ", error);
-			document.getElementById("feedback").innerHTML = "Error deleting entry \"" + entry.name + "\": " + error;
-		});
+function deleteSelected() {
+	var rows = table.getSelectedRows();
+	if (rows.length > 0) {
+		var msg = "Are you sure you want to permanently delete " + rows.length + " entries?";
+		if (rows.length == 1) {
+			var name = rows[0].getData().name;
+			msg = "Are you sure you want to permanently delete the entry for \"" + name + "\"?";
+		}
+		if (confirm(msg)) {
+			document.getElementById("feedback").hidden = false;
+			if (rows.length == 1) {
+				document.getElementById("feedback").innerHTML = "Deleting entry...";
+			} else {
+				document.getElementById("feedback").innerHTML = "Deleting entries...";
+			}
+			rows.forEach((row) => {
+				db.collection("map_entries").doc(row.getData().id).delete().then(() => {
+					row.delete();
+				}).catch((error) => {
+					console.error("Error removing Firestore document: ", error);
+				});
+			});
+			document.getElementById("feedback").hidden = true;
+		}
 	}
 }
 
@@ -58,13 +65,18 @@ function goToMap(row) {
 	window.location = "index.html?lat=" + row.getData().lat + "&lng=" + row.getData().lng;
 }
 
+function handleSelectionChange(data, rows) {
+	if (rows.length > 0) {
+		document.getElementById("delete_button").disabled = false;
+	} else {
+		document.getElementById("delete_button").disabled = true;
+	}
+}
+
 function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: deleteButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
-				deleteEntry(cell.getRow());
-			}},
 			{formatter: editButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
 				editEntry(cell.getRow());
 			}},
@@ -87,6 +99,8 @@ function generateTable(data) {
 			{title: "Description", field: "content"}
 		],
 		layout: "fitDataStretch",
+		selectable: true,
+		rowSelectionChanged: handleSelectionChange,
 		pagination: "local",
 		paginationSize: "25",
 		paginationSizeSelector: [10, 25, 50, 100],

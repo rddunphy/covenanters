@@ -28,8 +28,11 @@
 				</div>
 				<div class="row">
 					<div id="toolbar" class="d-grid gap-2 d-md-block mb-3">
-						<input type="button" class="btn btn-outline-primary" value="New entry" onclick="window.location='data_entry.html'">
-						<input type="button" class="btn btn-outline-secondary" value="Download" onclick="downloadData();">
+						<div class="btn-group" role="group">
+							<button type="button" title="New entry" class="btn btn-primary" onclick="window.location='data_entry.html'"><i class="fas fa-plus-circle"></i></button>
+							<button type="button" title="Download data" class="btn btn-secondary" onclick="downloadData();"><i class="fas fa-download"></i></button>
+							<button type="button" id="delete_button" title="Delete entries" class="btn btn-danger" onclick="deleteSelected();" disabled><i class="fas fa-trash-alt"></i></button>
+						</div>
 						<div id="feedback" hidden></div>
 					</div>
 				</div>
