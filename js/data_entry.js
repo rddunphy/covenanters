@@ -2,8 +2,8 @@ function getEntryData() {
 	var data = {
 		name: document.getElementById("name").value,
 		type: document.getElementById("type").value,
-		lat: document.getElementById("lat").value,
-		lng: document.getElementById("lng").value,
+		lat: parseFloat(document.getElementById("lat").value),
+		lng: parseFloat(document.getElementById("lng").value),
 		content: document.getElementById("content").value,
 		updated: firebase.firestore.FieldValue.serverTimestamp()
 	};
@@ -62,8 +62,14 @@ function populateData(data) {
 	document.getElementById("type").value = data.type;
 	document.getElementById("content").value = data.content;
 	updateMarker();
+}
+
+function bindDataListeners() {
+	document.getElementById("name").addEventListener("change", updateMarker);
 	document.getElementById("lat").addEventListener("change", updateMarker);
 	document.getElementById("lng").addEventListener("change", updateMarker);
+	document.getElementById("type").addEventListener("change", updateMarker);
+	document.getElementById("content").addEventListener("change", updateMarker);
 }
 
 function handleMapClick(e) {
@@ -79,13 +85,25 @@ function handleMapClick(e) {
 }
 
 function updateMarker() {
-	var lat = parseFloat(document.getElementById("lat").value);
-	var lng = parseFloat(document.getElementById("lng").value);
-	if (lat && lng) {
+	var data = getEntryData();
+	if (data.lat && data.lng) {
 		if (marker) {
 			map.removeLayer(marker);
 		}
-		marker = L.marker([lat, lng]).addTo(map);
+		var icon = L.icon({
+			iconUrl: "icons/pin_" + data.type + ".png",
+			shadowUrl: "icons/shadow.png",
+			iconSize:     [36, 49], // size of the icon
+			shadowSize:   [55, 49], // size of the shadow
+			iconAnchor:   [18.5, 49], // point of the icon which will correspond to marker's location
+			shadowAnchor: [18.5, 49],  // the same for the shadow
+			popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
+		});
+		marker = L.marker([data.lat, data.lng], {icon: icon}).addTo(map);
+		var content = "<div class=\"info-window-wrapper\"><h3>" + data.name + "</h3><div>" + data.content
+			+ "</div></div>";
+		marker.bindPopup(content);
+		marker.openPopup();
 	}
 }
 
@@ -117,4 +135,5 @@ window.onload = function() {
 			document.getElementById("feedback").innerHTML = "Error while fetching entry from database:<br>" + error;
 		});
 	}
+	bindDataListeners();
 }
