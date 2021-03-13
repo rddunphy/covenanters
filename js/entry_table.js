@@ -105,7 +105,8 @@ function generateTable(data) {
 		paginationSize: "25",
 		paginationSizeSelector: [10, 25, 50, 100],
 		history: true,
-		tooltips: true
+		tooltips: true,
+		initialSort: [{column: "name", dir: "asc"}]
 	});
 	return table;
 }
