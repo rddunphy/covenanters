@@ -14,8 +14,6 @@ main {
 
 #map {
     margin: 0 auto;
-    height: 600px;
-    width: 1000px;
 }
 
 #footer {
@@ -29,4 +27,12 @@ main {
 
 .info-window-wrapper {
     text-align: left;
+}
+
+.info-window-wrapper h1 {
+	font-size: 1.6em;
+}
+
+.info-window-wrapper h2 {
+	font-size: 1.4em;
 }

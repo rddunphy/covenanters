@@ -22,7 +22,7 @@ function createMarker(params) {
 		popupAnchor:  [0, -49] // point from which the popup should open relative to the iconAnchor
 	});
     var marker = L.marker([params.lat, params.lng], {icon: icon});
-	var content = "<div class=\"info-window-wrapper\"><h3>" + params.name + "</h3><div>" + params.content
+	var content = "<div class=\"info-window-wrapper\"><h1>" + params.name + "</h1><div>" + params.content
 		+ "</div></div>";
 	marker.bindPopup(content);
 	return marker;

@@ -100,7 +100,7 @@ function updateMarker() {
 			data.name = "<span style=\"color:grey\">[Name]</span>";
 		}
 		marker = L.marker([data.lat, data.lng], {icon: icon}).addTo(map);
-		var content = "<div class=\"info-window-wrapper\"><h3>" + data.name + "</h3><div>" + data.content
+		var content = "<div class=\"info-window-wrapper\"><h1>" + data.name + "</h1><div>" + data.content
 			+ "</div></div>";
 		marker.bindPopup(content);
 		marker.openPopup();
