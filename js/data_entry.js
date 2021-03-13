@@ -25,27 +25,25 @@ function submitError(error) {
 }
 
 function submitEntry() {
+	document.getElementById("submit").disabled = true;
+	document.getElementById("submit").innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>";
 	data = getEntryData();
-	if (data.name && data.lat && data.lng) {
-		document.getElementById("submit").disabled = true;
-		document.getElementById("submit").innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-		if (id) {
-			db.collection("map_entries").doc(id).set(data)
-				.then(() => {
-					submitSuccess(id);
-				})
-				.catch((error) => {
-					submitError(error);
-				});
-		} else {
-			db.collection("map_entries").add(data)
-				.then((docRef) => {
-					submitSuccess(docRef.id);
-				})
-				.catch((error) => {
-					submitError(error);
-				});
-		}
+	if (id) {
+		db.collection("map_entries").doc(id).set(data)
+			.then(() => {
+				submitSuccess(id);
+			})
+			.catch((error) => {
+				submitError(error);
+			});
+	} else {
+		db.collection("map_entries").add(data)
+			.then((docRef) => {
+				submitSuccess(docRef.id);
+			})
+			.catch((error) => {
+				submitError(error);
+			});
 	}
 }
 
