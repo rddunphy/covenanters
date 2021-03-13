@@ -77,10 +77,10 @@ function generateTable(data) {
 	var table = new Tabulator("#entry_table", {
 		data: tabledata,
 		columns: [
-			{formatter: editButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
+			{formatter: editButton, hozAlign:"center", download: false, width: 40, headerSort: false, tooltip: "Edit entry", cellClick: function(e, cell){
 				editEntry(cell.getRow());
 			}},
-			{formatter: mapButton, hozAlign:"center", download: false, width: 40, headerSort: false, cellClick: function(e, cell){
+			{formatter: mapButton, hozAlign:"center", download: false, width: 40, headerSort: false, tooltip: "Show on map", cellClick: function(e, cell){
 				goToMap(cell.getRow());
 			}},
 			{title: "Name", field: "name"},
