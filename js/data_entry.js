@@ -9,9 +9,10 @@ function getEntryData() {
 	return data;
 }
 
-function submitSuccess(id) {
-	console.log("Document with ID ", id, " updated");
+function submitSuccess(newId) {
+	console.log("Document with ID ", newId, " updated");
 	document.getElementById("submit").innerHTML = "Save";
+	id = newId;
 	saveState = getEntryData();
 	checkUnsavedChanges();
 }
@@ -129,8 +130,8 @@ function checkUnsavedChanges() {
 	}
 }
 
-const id = new URLSearchParams(window.location.search).get("id");
 const db = firebase.firestore();
+var id = new URLSearchParams(window.location.search).get("id");
 var map;
 var marker;
 var saveState;
