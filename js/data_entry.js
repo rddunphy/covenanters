@@ -12,7 +12,8 @@ function getEntryData() {
 function submitSuccess(id) {
 	console.log("Document with ID ", id, " updated");
 	document.getElementById("submit").innerHTML = "Save";
-	returnToOverviewAfter(1000);
+	saveState = getEntryData();
+	checkUnsavedChanges();
 }
 
 function submitError(error) {
@@ -58,15 +59,6 @@ function sleep(ms) {
 	return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function returnToOverviewAfter(ms) {
-	await sleep(ms);
-	returnToOverview();
-}
-
-function returnToOverview() {
-	window.location = "data_overview.html";
-}
-
 function populateData(data) {
 	document.getElementById("name").value = data.name;
 	document.getElementById("lat").value = data.lat;
@@ -74,15 +66,6 @@ function populateData(data) {
 	document.getElementById("type").value = data.type;
 	tinymce.get("content").setContent(data.content);
 	updateMarker();
-}
-
-function bindDataListeners() {
-	document.getElementById("name").addEventListener("input", (e) => {
-		markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
-	});
-	document.getElementById("lat").addEventListener("change", updateMarker);
-	document.getElementById("lng").addEventListener("change", updateMarker);
-	document.getElementById("type").addEventListener("change", updateMarker);
 }
 
 function handleMapClick(e) {
@@ -111,6 +94,8 @@ function updateMarker() {
 		});
 		marker = L.marker([data.lat, data.lng], {icon: icon}).addTo(map);
 		markerPopupUpdate(data.name, data.content);
+	} else {
+		checkUnsavedChanges();
 	}
 }
 
@@ -124,15 +109,46 @@ function markerPopupUpdate(title, body) {
 		marker.bindPopup(content);
 		marker.openPopup();
 	}
+	checkUnsavedChanges();
+}
+
+function hasUnsavedChanges() {
+	if (!saveState) {
+		return false;
+	}
+	var data = getEntryData();
+	if (data.lat != saveState.lat || data.lng != saveState.lng || data.name != saveState.name || 
+		data.type != saveState.type || data.content != saveState.content) {
+		return true;
+	}
+	return false;
+}
+
+function checkUnsavedChanges() {
+	if (hasUnsavedChanges()) {
+		document.getElementById("submit").disabled = false;
+	} else {
+		document.getElementById("submit").disabled = true;
+	}
 }
 
 const id = new URLSearchParams(window.location.search).get("id");
 const db = firebase.firestore();
 var map;
 var marker;
+var saveState;
 
 window.onload = function() {
+	window.addEventListener("beforeunload", function (e) {
+		if (!hasUnsavedChanges()) {
+			return undefined;
+		}
+		var msg = "If you leave before saving, any changes will be lost. Leave page anyway?";
+		(e || window.event).returnValue = msg; //Gecko + IE
+		return msg; //Gecko + Webkit, Safari, Chrome etc.
+	});
 	initSigninStatus(true, true);
+	document.getElementById("submit").disabled = true;
 	tinymce.init({
 		selector: "#content",
 		resize: false,
@@ -148,7 +164,7 @@ window.onload = function() {
 		],
 		menubar: "",
 		init_instance_callback: function(editor) {
-			editor.on("input", function(e) {
+			editor.on("NodeChange", function(e) {
 				markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
 			});
 		}
@@ -157,13 +173,12 @@ window.onload = function() {
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 	map.on("click", handleMapClick);
 	if (id) {
-		document.getElementById("submit").disabled = true;
 		document.getElementById("title").innerHTML = "Edit entry";
 		var entry = db.collection("map_entries").doc(id).get()
 		.then((doc) => {
 			if (doc.exists) {
 				populateData(doc.data());
-				document.getElementById("submit").disabled = false;
+				saveState = getEntryData();
 			} else {
 				document.getElementById("feedback").hidden = false;
 				document.getElementById("feedback").innerHTML = "No entry with id " + id + ".";
@@ -174,6 +189,13 @@ window.onload = function() {
 			document.getElementById("feedback").hidden = false;
 			document.getElementById("feedback").innerHTML = "Error while fetching entry from database:<br>" + error;
 		});
+	} else {
+		saveState = getEntryData();
 	}
-	bindDataListeners();
+	document.getElementById("name").addEventListener("input", (e) => {
+		markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
+	});
+	document.getElementById("lat").addEventListener("change", updateMarker);
+	document.getElementById("lng").addEventListener("change", updateMarker);
+	document.getElementById("type").addEventListener("change", updateMarker);
 }

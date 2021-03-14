@@ -29,6 +29,7 @@
 			<div class="container">
 				<div class="row mb-3">
 					<h2 id="title">New entry</h2>
+					<p><a href="data_overview.html">Back to overview</a></p>
 				</div>
 				<div class="row">
 					<div class="col">
@@ -61,14 +62,15 @@
 								</div>
 								<div id="feedback" class="d-grid invalid-feedback" hidden></div>
 								<div class="d-grid gap-2 d-md-block">
-									<button type="button" class="btn btn-outline-secondary" onclick="returnToOverview();">Cancel</button>
+									<button type="button" class="btn btn-outline-secondary" onclick="window.location='data_overview.html';">Cancel</button>
+		
 									<button type="button" id="submit" class="btn btn-outline-primary" onclick="submitEntry();">Save</button>
 								</div>
 							</div>
 						</form>
 					</div>
 					<div class="col">
-						<div id="map" style="width:600px;height:400px"></div>
+						<div id="map"></div>
 					</div>
 				</div>
 			</div>
