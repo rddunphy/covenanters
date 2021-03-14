@@ -29,6 +29,7 @@ function createMarker(params) {
 }
 
 window.onload = function() {
+	initSigninStatus(false, false);
 	var lat = 56.0;
 	var lng = -4.0;
 	var zoom = 8;

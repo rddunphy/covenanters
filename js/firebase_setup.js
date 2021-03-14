@@ -11,3 +11,67 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+
+function signOut() {
+	firebase.auth().signOut().then(() => {
+		console.log("Sign-out successful.");
+	}).catch((error) => {
+		console.error("Error while signing out: " + error);
+	});
+}
+
+function updateSigninStatus(user, signedOutMsg, signedOutRedirect) {
+	let div = document.getElementById("signin-status");
+	if (user) {
+		var name = user.displayName;
+		if (!name) {
+			name = user.email;
+		}
+		div.innerHTML = "Signed in as " + name + ". <a href=\"#\" onclick=\"signOut();\">Sign out</a>";
+	} else {
+		if (signedOutMsg) {
+			div.innerHTML = "Signed out";
+		} else {
+			div.innerHTML = "";
+		}
+		if (signedOutRedirect) {
+			window.location.href = "login.html";
+		}
+	}
+}
+
+function initSigninStatus(signedOutMsg, signedOutRedirect) {
+	firebase.auth().onAuthStateChanged((user) => {updateSigninStatus(user, signedOutMsg, signedOutRedirect);});
+}
+	
+function signInUI() {
+	var ui = new firebaseui.auth.AuthUI(firebase.auth());
+	var uiConfig = {
+		callbacks: {
+			signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+				// User successfully signed in.
+				// Return type determines whether we continue the redirect automatically
+				// or whether we leave that to developer to handle.
+				return true;
+			},
+			uiShown: function() {
+				// The widget is rendered.
+				// Hide the loader.
+				document.getElementById("loader").style.display = "none";
+			}
+		},
+		credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+		// Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+		signInFlow: "popup",
+		signInSuccessUrl: "data_overview.html",
+		signInOptions: [
+			firebase.auth.EmailAuthProvider.PROVIDER_ID
+		],
+		// Terms of service url.
+		// tosUrl: "<your-tos-url>",
+		// Privacy policy url.
+		// privacyPolicyUrl: "<your-privacy-policy-url>"
+	};
+	// The start method will wait until the DOM is loaded.
+	ui.start("#firebaseui-auth-container", uiConfig);
+}

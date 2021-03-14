@@ -172,6 +172,7 @@ const tabledata = [];
 var table;
 
 window.onload = function() {
+	initSigninStatus(true, true);
 	db.collection("map_entries").get().then((querySnapshot) => {
 		querySnapshot.forEach((doc) => {
 			entry = doc.data();

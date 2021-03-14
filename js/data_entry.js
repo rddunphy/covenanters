@@ -125,6 +125,7 @@ var map;
 var marker;
 
 window.onload = function() {
+	initSigninStatus(true, true);
 	tinymce.init({
 		selector: "#content",
 		resize: false,

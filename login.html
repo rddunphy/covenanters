@@ -4,11 +4,11 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
-		<title>Covenanters map - data entry</title>
+		<title>Covenanters map - sign-in</title>
 		<link rel="icon" type="image/svg+xml" href="icons/favicon.svg" />
 		<link rel="alternate icon" type="image/png" href="icons/favicon.png" />
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-		<link rel="stylesheet" href="https://unpkg.com/tabulator-tables/dist/css/bootstrap/tabulator_bootstrap4.min.css" rel="stylesheet">
+		<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css" />
 		<link rel="stylesheet" href="css/style.css">
 	</head>
 	<body>
@@ -24,38 +24,25 @@
 			</div>
 		</header>
 		<main>
-			<div class="container">
-				<div class="row mb-3">
-					<h2 id="title">Overview</h2>
-				</div>
-				<div class="row">
-					<div id="toolbar" class="d-grid gap-2 d-md-block mb-3">
-						<div class="btn-group" role="group">
-							<button type="button" title="New entry" class="btn btn-primary" onclick="window.location='data_entry.html'"><i class="fas fa-plus-circle"></i></button>
-							<button type="button" title="Download data" class="btn btn-secondary" onclick="downloadData();"><i class="fas fa-download"></i></button>
-							<button type="button" id="delete_button" title="Delete entries" class="btn btn-danger" onclick="deleteSelected();" disabled><i class="fas fa-trash-alt"></i></button>
-						</div>
-						<div id="feedback" hidden></div>
-					</div>
-				</div>
-				<div class="row">
-					<div id="entry_table"></div>
-				</div>
+			<div id="firebaseui-auth-container">
 			</div>
+			<div id="loader">Loading...</div>
 		</main>
 		<footer>
 			<div id="footer" class="text-center p-3">
 				<p><i class="fab fa-github"></i> Hosted on <a href="https://github.com/rddunphy/PassphraseGenerator">GitHub</a>.</p>
 			</div>
 		</footer>
+		<script src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-app.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-analytics.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-firestore.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/8.3.0/firebase-auth.js"></script>
-		<script src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 		<script src="https://kit.fontawesome.com/740521db32.js" crossorigin="anonymous"></script>
-		<script src="js/moment.min.js"></script>
 		<script src="js/firebase_setup.js"></script>
-		<script src="js/entry_table.js"></script>
+		<script>
+			window.onload = signInUI;
+			initSigninStatus(true, false);
+		</script>
 	</body>
 </html>
