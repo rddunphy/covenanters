@@ -167,7 +167,7 @@ window.onload = function() {
 			});
 		}
 	});
-	map = L.map('map').setView([56.0, -4.0], 8);
+	map = L.map('map').setView([57.1, -4.8], 6);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 	map.on("click", handleMapClick);
 	if (id) {
