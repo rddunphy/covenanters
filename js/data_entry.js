@@ -55,10 +55,6 @@ function submitEntry() {
 	}
 }
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 function populateData(data) {
 	document.getElementById("name").value = data.name;
 	document.getElementById("lat").value = data.lat;
@@ -117,11 +113,12 @@ function hasUnsavedChanges() {
 		return false;
 	}
 	var data = getEntryData();
-	if (data.lat != saveState.lat || data.lng != saveState.lng || data.name != saveState.name || 
-		data.type != saveState.type || data.content != saveState.content) {
-		return true;
+	if (Object.is(data.lat, saveState.lat) && Object.is(data.lng, saveState.lng) && 
+		Object.is(data.name, saveState.name) && Object.is(data.type, saveState.type) &&
+		Object.is(data.content, saveState.content)) {
+		return false;
 	}
-	return false;
+	return true;
 }
 
 function checkUnsavedChanges() {
