@@ -10,7 +10,7 @@ const typeColours = {
 	church: "#ffd42a",
 	museum: "#5fd35f",
 	grave: "#c8b7b7",
-	monument: "#f58dd3",
+	monument: "#5f8dd3",
 	battle: "#c83737",
 	castle: "#ff7f2a"
 };
