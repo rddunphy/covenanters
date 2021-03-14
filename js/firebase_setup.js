@@ -11,6 +11,7 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
+var userName = "";
 
 function signOut() {
 	firebase.auth().signOut().then(() => {
@@ -23,11 +24,11 @@ function signOut() {
 function updateSigninStatus(user, signedOutMsg, signedOutRedirect) {
 	let div = document.getElementById("signin-status");
 	if (user) {
-		var name = user.displayName;
-		if (!name) {
-			name = user.email;
+		userName = user.displayName;
+		if (!userName) {
+			userName = user.email;
 		}
-		div.innerHTML = "Signed in as " + name + ". <a href=\"#\" onclick=\"signOut();\">Sign out</a>";
+		div.innerHTML = "Signed in as " + userName + ". <a href=\"#\" onclick=\"signOut();\">Sign out</a>";
 	} else {
 		if (signedOutMsg) {
 			div.innerHTML = "Signed out";

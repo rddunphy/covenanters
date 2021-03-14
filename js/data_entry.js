@@ -4,8 +4,7 @@ function getEntryData() {
 		type: document.getElementById("type").value,
 		lat: parseFloat(document.getElementById("lat").value),
 		lng: parseFloat(document.getElementById("lng").value),
-		content: tinymce.get("content").getContent(),
-		updated: firebase.firestore.FieldValue.serverTimestamp()
+		content: tinymce.get("content").getContent()
 	};
 	return data;
 }
@@ -29,7 +28,10 @@ function submitEntry() {
 	document.getElementById("submit").innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>";
 	data = getEntryData();
 	if (id) {
-		db.collection("map_entries").doc(id).set(data)
+		// Update entry
+		data.updated = firebase.firestore.FieldValue.serverTimestamp();
+		data.updatedBy = userName;
+		db.collection("map_entries").doc(id).update(data)
 			.then(() => {
 				submitSuccess(id);
 			})
@@ -37,6 +39,11 @@ function submitEntry() {
 				submitError(error);
 			});
 	} else {
+		// Create new entry
+		data.updated = firebase.firestore.FieldValue.serverTimestamp();
+		data.created = firebase.firestore.FieldValue.serverTimestamp();
+		data.updatedBy = userName;
+		data.createdBy = userName;
 		db.collection("map_entries").add(data)
 			.then((docRef) => {
 				submitSuccess(docRef.id);
