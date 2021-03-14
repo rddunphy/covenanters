@@ -94,8 +94,8 @@ function updateMarker() {
 	var data = getEntryData();
 	if (data.lat && data.lng) {
 		var icon = L.icon({
-			iconUrl: "icons/pin_" + data.type + ".png",
-			shadowUrl: "icons/shadow.png",
+			iconUrl: "icons/pin_" + data.type + ".svg",
+			shadowUrl: "icons/shadow.svg",
 			iconSize:     [36, 49],
 			shadowSize:   [55, 49],
 			iconAnchor:   [18.5, 49],

@@ -13,8 +13,8 @@ function addAllMarkers(data) {
 
 function createMarker(params) {
 	var icon = L.icon({
-		iconUrl: "icons/pin_" + params.type + ".png",
-		shadowUrl: "icons/shadow.png",
+		iconUrl: "icons/pin_" + params.type + ".svg",
+		shadowUrl: "icons/shadow.svg",
 		iconSize:     [36, 49], // size of the icon
 		shadowSize:   [55, 49], // size of the shadow
 		iconAnchor:   [18.5, 49], // point of the icon which will correspond to marker's location
