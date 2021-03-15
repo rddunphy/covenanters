@@ -146,6 +146,44 @@ function checkUnsavedChanges() {
 	}
 }
 
+var crossRefEntries = [];
+var crossRefDialog = {
+	title: "Insert cross-reference",
+	body: {
+		type: "panel", // The root body type - a Panel or TabPanel
+		items: [ // A list of panel components
+			{
+				type: "selectbox",
+				name: "entry",
+				label: "Choose a location: ",
+				items: crossRefEntries
+			}
+		]
+	},
+	buttons: [ // A list of footer buttons
+	{
+      type: "cancel",
+      name: "closeButton",
+      text: "Cancel"
+    },
+    {
+      type: "submit",
+      name: "submitButton",
+      text: "Save",
+      primary: true
+    }
+	],
+	onSubmit: function(dialogApi) {
+		var data = dialogApi.getData();
+		var id = data.entry;
+		var name = crossRefEntries.find((obj) => {return obj.value == id}).text;
+		tinymce.activeEditor.execCommand('mceInsertContent', false, 
+			"<a href=\"#?id=" + id + "\"><i class=\"fas fa-map-marker-alt\">&nbsp;</i>" + name + "</a>");
+
+		dialogApi.close();
+	}
+};
+
 const db = firebase.firestore();
 var id = new URLSearchParams(window.location.search).get("id");
 var map;
@@ -159,7 +197,7 @@ window.onload = function() {
 		selector: "#content",
 		resize: false,
 		plugins: "link lists image",
-		toolbar: "undo redo | styleselect | bold italic underline strikethrough superscript subscript | bullist numlist | link image ",
+		toolbar: "undo redo | styleselect | bold italic underline strikethrough superscript subscript | bullist numlist | link image crossref",
 		image_dimensions: false,
 		content_css: "css/tinymce_style.css",
 		style_formats: [
@@ -172,6 +210,16 @@ window.onload = function() {
 		init_instance_callback: function(editor) {
 			editor.on("NodeChange", function(e) {
 				markerPopupUpdate(document.getElementById("name").value, tinymce.get("content").getContent());
+			});
+		},
+		setup: function(editor) {
+			editor.ui.registry.addIcon("marker", "<svg height=\"24\" width=\"24\"><path d=\"M 11.152141,22.556128 C 4.9088688,13.505235 3.750002,12.576337 3.750002,9.2499978 3.750002,4.6936357 7.4436378,0.99999994 12,0.99999994 c 4.556362,0 8.249998,3.69363576 8.249998,8.24999786 0,3.3263392 -1.158867,4.2552372 -7.402139,13.3061302 -0.409707,0.591851 -1.286054,0.591808 -1.695718,0 z M 12,12.687497 c 1.898487,0 3.437499,-1.539012 3.437499,-3.4374992 0,-1.8984878 -1.539012,-3.4374992 -3.437499,-3.4374992 -1.898488,0 -3.4374993,1.5390114 -3.4374993,3.4374992 0,1.8984872 1.5390113,3.4374992 3.4374993,3.4374992 z\" /></svg>");
+			editor.ui.registry.addButton("crossref", {
+				icon: "marker",
+				tooltip: "Insert cross-reference",
+				onAction: function (_) {
+					editor.windowManager.open(crossRefDialog);
+				}
 			});
 		}
 	});
@@ -216,5 +264,11 @@ window.onload = function() {
 		e.preventDefault();
 		submitEntry();
 		return false;
+	});
+	db.collection("map_entries").get().then((querySnapshot) => {
+		querySnapshot.forEach((doc) => {
+			entry = doc.data();
+			crossRefEntries.push({value: doc.id, text: entry.name});
+		});
 	});
 }
