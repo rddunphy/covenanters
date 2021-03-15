@@ -49,3 +49,27 @@ main {
 	max-width: 250px;
 	height: auto;
 }
+
+.info-window-wrapper blockquote {
+	border-left: 0.5em solid #ddd;
+	margin: 0.8em 0.8em 0.8em 2em;
+	padding: 0.1em 0.8em;
+	quotes: "“" "”" "‘" "’";
+}
+
+.info-window-wrapper blockquote::before {
+	color: #ddd;
+	position: absolute;
+	content: open-quote;
+	font-size: 4em;
+	margin-left: -0.8em;
+	margin-top: -0.3em;
+}
+
+.info-window-wrapper blockquote p {
+	margin: 3px 0px;
+}
+
+.info-window-wrapper .placeholder {
+	color: #cccccc;
+}

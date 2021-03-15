@@ -25,10 +25,26 @@ function submitError(error) {
 	document.getElementById("submit").disabled = false;
 }
 
+function validateInput(data) {
+	if (!data.name || data.name == "") {
+		return false;
+	}
+	if (isNaN(data.lat)) {
+		return false;
+	}
+	if (isNaN(data.lng)) {
+		return false;
+	}
+	return true;
+}
+
 function submitEntry() {
+	data = getEntryData();
+	if (!validateInput(data)) {
+		return;
+	}
 	document.getElementById("submit").disabled = true;
 	document.getElementById("submit").innerHTML = "<span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span>";
-	data = getEntryData();
 	if (id) {
 		// Update entry
 		data.updated = firebase.firestore.FieldValue.serverTimestamp();
@@ -99,7 +115,7 @@ function updateMarker() {
 function markerPopupUpdate(title, body) {
 	if (marker) {
 		if (!title) {
-			title = "<span style=\"color:grey\">[Name]</span>";
+			title = "<span class=\"placeholder\">[Name]</span>";
 		}
 		var content = "<div class=\"info-window-wrapper\"><h1>" + title + "</h1><div>" + body
 			+ "</div></div>";
@@ -137,14 +153,6 @@ var marker;
 var saveState;
 
 window.onload = function() {
-	window.addEventListener("beforeunload", function (e) {
-		if (!hasUnsavedChanges()) {
-			return undefined;
-		}
-		var msg = "If you leave before saving, any changes will be lost. Leave page anyway?";
-		(e || window.event).returnValue = msg; //Gecko + IE
-		return msg; //Gecko + Webkit, Safari, Chrome etc.
-	});
 	initSigninStatus(true, true);
 	document.getElementById("submit").disabled = true;
 	tinymce.init({
@@ -167,7 +175,7 @@ window.onload = function() {
 			});
 		}
 	});
-	map = L.map('map').setView([57.1, -4.8], 6);
+	map = L.map('map').setView([56.49, -4.2], 6);
 	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
 	map.on("click", handleMapClick);
 	if (id) {
@@ -196,4 +204,17 @@ window.onload = function() {
 	document.getElementById("lat").addEventListener("change", updateMarker);
 	document.getElementById("lng").addEventListener("change", updateMarker);
 	document.getElementById("type").addEventListener("change", updateMarker);
+	window.addEventListener("beforeunload", (e) => {
+		if (!hasUnsavedChanges()) {
+			return undefined;
+		}
+		var msg = "If you leave before saving, any changes will be lost. Leave page anyway?";
+		(e || window.event).returnValue = msg; //Gecko + IE
+		return msg; //Gecko + Webkit, Safari, Chrome etc.
+	});
+	document.getElementById("form").addEventListener("submit", (e) => {
+		e.preventDefault();
+		submitEntry();
+		return false;
+	});
 }
