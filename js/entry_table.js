@@ -62,7 +62,7 @@ function editEntry(row) {
 }
 
 function goToMap(row) {
-	window.location = "index.html?lat=" + row.getData().lat + "&lng=" + row.getData().lng;
+	window.location = "index.html?markerId=" + row.getData().id;
 }
 
 function handleSelectionChange(data, rows) {

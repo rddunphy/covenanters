@@ -1,12 +1,16 @@
 const initLat = new URLSearchParams(window.location.search).get("lat");
 const initLng = new URLSearchParams(window.location.search).get("lng");
+const initMarker = new URLSearchParams(window.location.search).get("markerId");
 const db = firebase.firestore();
+const markerIds = [];
 var map;
 
 function addAllMarkers(data) {
     var markers = L.markerClusterGroup();
     for (var i = 0; i < data.length; i++) {
-        markers.addLayer(createMarker(data[i]));
+        var m = createMarker(data[i]);
+		markerIds.push({id: data[i].id, marker: m});
+        markers.addLayer(m);
     }
 	map.addLayer(markers);
 }
@@ -28,6 +32,14 @@ function createMarker(params) {
 	return marker;
 }
 
+function goToMarker(id) {
+	var m = markerIds.find((obj) => {return obj.id == id}).marker;
+	var coords = m.getLatLng();
+	console.log(coords);
+	map.setView(coords, 18);
+	m.openPopup();
+}
+
 window.onload = function() {
 	initSigninStatus(false, false);
 	var lat = 57.1;
@@ -43,9 +55,14 @@ window.onload = function() {
 	var markerData = [];
 	db.collection("map_entries").get().then((querySnapshot) => {
 		querySnapshot.forEach((doc) => {
-			markerData.push(doc.data());
+			var entry = doc.data();
+			entry.id = doc.id;
+			markerData.push(entry);
 		});
 		addAllMarkers(markerData);
+		if (initMarker) {
+			goToMarker(initMarker);
+		}
 	});
 }
 

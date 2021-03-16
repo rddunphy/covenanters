@@ -146,7 +146,11 @@ function checkUnsavedChanges() {
 	}
 }
 
-var crossRefEntries = [];
+function goToMarker(id) {
+	window.open("https://www.daviddunphy.co.uk/covenanters/index.html?markerId=" + id);
+}
+
+const crossRefEntries = [];
 var crossRefDialog = {
 	title: "Insert cross-reference",
 	body: {
@@ -178,7 +182,7 @@ var crossRefDialog = {
 		var id = data.entry;
 		var name = crossRefEntries.find((obj) => {return obj.value == id}).text;
 		tinymce.activeEditor.execCommand('mceInsertContent', false, 
-			"<a href=\"#?id=" + id + "\"><i class=\"fas fa-map-marker-alt\">&nbsp;</i>" + name + "</a>");
+			"<a href=\"javascript:goToMarker('" + id + "');\"><i class=\"fas fa-map-marker-alt\">&nbsp;</i>" + name + "</a>");
 
 		dialogApi.close();
 	}
@@ -196,6 +200,7 @@ window.onload = function() {
 	tinymce.init({
 		selector: "#content",
 		resize: false,
+		allow_script_urls: true,
 		plugins: "link lists image",
 		toolbar: "undo redo | styleselect | bold italic underline strikethrough superscript subscript | bullist numlist | link image crossref",
 		image_dimensions: false,
