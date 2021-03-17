@@ -6,13 +6,40 @@ const markerIds = [];
 var map;
 
 function addAllMarkers(data) {
-    var markers = L.markerClusterGroup();
+    var markers = {
+		"church": [],
+		"castle": [],
+		"battle": [],
+		"monument": [],
+		"museum": [],
+		"grave": []
+	};
     for (var i = 0; i < data.length; i++) {
         var m = createMarker(data[i]);
 		markerIds.push({id: data[i].id, marker: m});
-        markers.addLayer(m);
+		var t = data[i].type;
+        markers[t].push(m);
     }
-	map.addLayer(markers);
+	var churches = L.layerGroup(markers["church"]);
+	var battles = L.layerGroup(markers["battle"]);
+	var castles = L.layerGroup(markers["castle"]);
+	var monuments = L.layerGroup(markers["monument"]);
+	var museums = L.layerGroup(markers["museum"]);
+	var graves = L.layerGroup(markers["grave"]);
+	map.addLayer(churches);
+	map.addLayer(battles);
+	map.addLayer(castles);
+	map.addLayer(monuments);
+	map.addLayer(museums);
+	map.addLayer(graves);
+	L.control.layers([],{
+		"Churches": churches,
+		"Battlefields": battles,
+		"Castles": castles,
+		"Monuments": monuments,
+		"Museums": museums,
+		"Gravesites": graves
+	}).addTo(map);
 }
 
 function createMarker(params) {
@@ -35,8 +62,6 @@ function createMarker(params) {
 function goToMarker(id) {
 	var m = markerIds.find((obj) => {return obj.id == id}).marker;
 	var coords = m.getLatLng();
-	console.log(coords);
-	map.setView(coords, 18);
 	m.openPopup();
 }
 
